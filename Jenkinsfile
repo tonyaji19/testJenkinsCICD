@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git 'https://github.com/tonyaji19/testJenkinsCICD.git'
+                 git branch: 'main', url: 'https://github.com/tonyaji19/testJenkinsCICD.git'
             }
         }
 
