@@ -6,9 +6,17 @@ pipeline {
     }
 
     stages {
+        stage('Setup Git Safe Directory') {
+            steps {
+                script {
+                    sh 'git config --global --add safe.directory F:/PROJECT/localgitrepojenkins'
+                }
+            }
+        }
+
         stage('Checkout') {
             steps {
-                 git branch: 'main', url: 'https://github.com/tonyaji19/testJenkinsCICD.git'
+                git branch: 'main', url: 'https://github.com/tonyaji19/testJenkinsCICD.git'
             }
         }
 
