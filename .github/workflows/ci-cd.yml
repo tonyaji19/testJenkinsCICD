@@ -30,15 +30,15 @@ jobs:
           # Mendapatkan Jenkins Crumb dengan cara yang benar
           CRUMB=$(curl -s -u "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
             "http://103.160.62.183:8080/crumbIssuer/api/xml?xpath=concat(//crumbRequestField,':',//crumb)")
-
+      
           echo "Crumb: $CRUMB"
-
+      
           # Memeriksa apakah CRUMB berhasil didapatkan
           if [ -z "$CRUMB" ]; then
             echo "Failed to get Jenkins Crumb"
             exit 1
           fi
-          
+      
           # Trigger Jenkins Job dengan crumb yang valid
           curl -X POST "http://103.160.62.183:8080/job/cicdtonyaji/build" \
             --user "${{ secrets.JENKINS_USER }}:${{ secrets.JENKINS_TOKEN }}" \
