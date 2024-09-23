@@ -1,13 +1,11 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_ENV = 'production'
+    tools {
+        nodejs 'NodeJS 22.9.0' // Sesuaikan dengan nama yang kamu masukkan
     }
 
     stages {
-        
-
         stage('Checkout') {
             steps {
                 checkout scm
@@ -29,13 +27,7 @@ pipeline {
         stage('Deploy in Docker Container') {
             steps {
                 script {
-                    // Hapus container sebelumnya jika ada
-                    sh 'docker rm -f my-next-app || true'
-
-                    // Build Docker image
                     sh 'docker build -t my-next-app .'
-
-                    // Jalankan container baru
                     sh 'docker run -d -p 3000:3000 --name my-next-app my-next-app'
                 }
             }
