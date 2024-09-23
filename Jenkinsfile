@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        DOCKER_IMAGE = "tonyaji19/cicdjenkins:${env.BUILD_ID}" // Atau bisa menggunakan SHA dari GitHub
+        DOCKER_IMAGE = "tonyaji19/cicdjenkins:${env.GIT_COMMIT}" // Menggunakan commit SHA dari repository GitHub
     }
 
     stages {
