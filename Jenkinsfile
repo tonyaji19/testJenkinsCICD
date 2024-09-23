@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     tools {
-        nodejs 'NodeJS 22.9.0' // Sesuaikan dengan nama yang kamu masukkan
+        nodejs 'NodeJS Build' // Sesuaikan dengan nama yang kamu masukkan
     }
 
     stages {
