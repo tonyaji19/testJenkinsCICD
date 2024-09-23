@@ -1,34 +1,22 @@
 pipeline {
     agent any
 
-    tools {
-        nodejs 'NodeJS Build' // Sesuaikan dengan nama yang kamu masukkan
+    environment {
+        DOCKER_IMAGE = "tonyaji19/cicdjenkins:${env.BUILD_ID}" // Atau bisa menggunakan SHA dari GitHub
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
-        stage('Install Dependencies') {
-            steps {
-                sh 'npm install'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'npm run build'
-            }
-        }
-
         stage('Deploy in Docker Container') {
             steps {
                 script {
-                    sh 'docker build -t my-next-app .'
-                    sh 'docker run -d -p 3000:3000 --name my-next-app my-next-app'
+                    // Stop and remove old container if exists
+                    sh 'docker stop my-next-app || true && docker rm my-next-app || true'
+
+                    // Pull the latest image from Docker Hub
+                    sh "docker pull ${DOCKER_IMAGE}"
+
+                    // Run the new container
+                    sh 'docker run -d -p 3000:3000 --name my-next-app ${DOCKER_IMAGE}'
                 }
             }
         }
@@ -36,13 +24,13 @@ pipeline {
 
     post {
         always {
-            cleanWs() // Bersihkan workspace setelah build
+            cleanWs() // Bersihkan workspace setelah deployment
         }
         success {
-            echo 'Build and deploy successful!'
+            echo 'Deployment successful!'
         }
         failure {
-            echo 'Build or deploy failed!'
+            echo 'Deployment failed!'
         }
     }
 }
